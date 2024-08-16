@@ -21,11 +21,18 @@ const coachDetailsLink = computed(() => {
     <h3>{{ fullName }}</h3>
     <h4>${{ rate }}/hour</h4>
     <div>
-      <span v-for="area in areas" :key="area">{{ area }}</span>
+      <BaseBadge
+        v-for="area in areas"
+        :key="area"
+        :title="area"
+        :type="area"
+      ></BaseBadge>
     </div>
     <div class="actions">
-      <RouterLink :to="coachContactLink">Contact</RouterLink>
-      <RouterLink :to="coachDetailsLink">Details</RouterLink>
+      <BaseButton mode="outline" link :to="coachContactLink"
+        >Contact</BaseButton
+      >
+      <BaseButton link :to="coachDetailsLink">Details</BaseButton>
     </div>
   </li>
 </template>

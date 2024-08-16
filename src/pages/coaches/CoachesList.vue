@@ -18,22 +18,24 @@ const hasCoaches = computed(() => {
 <template>
   <section>FILTER</section>
   <section>
-    <div class="controls">
-      <button>Referesh</button>
-      <RouterLink to="/register">Register as Coach</RouterLink>
-    </div>
-    <ul v-if="hasCoaches">
-      <CoachItem
-        v-for="coach in filteredCoaches"
-        :key="coach.id"
-        :id="coach.id"
-        :first-name="coach.firstName"
-        :last-name="coach.lastName"
-        :rate="coach.hourlyRate"
-        :areas="coach.areas"
-      />
-    </ul>
-    <h3 v-else>No coaches Found!</h3>
+    <BaseCard>
+      <div class="controls">
+        <BaseButton mode="outline">Referesh</BaseButton>
+        <BaseButton to="/register" link>Register as Coach</BaseButton>
+      </div>
+      <ul v-if="hasCoaches">
+        <CoachItem
+          v-for="coach in filteredCoaches"
+          :key="coach.id"
+          :id="coach.id"
+          :first-name="coach.firstName"
+          :last-name="coach.lastName"
+          :rate="coach.hourlyRate"
+          :areas="coach.areas"
+        />
+      </ul>
+      <h3 v-else>No coaches Found!</h3>
+    </BaseCard>
   </section>
 </template>
 
@@ -46,6 +48,7 @@ ul {
 
 .controls {
   display: flex;
+
   justify-content: space-between;
 }
 </style>
