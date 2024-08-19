@@ -1,11 +1,16 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
+import { useRouter } from 'vue-router';
 
 const firstName = ref('');
 const lastName = ref('');
 const description = ref('');
 const rate = ref(null);
 const areas = ref([]);
+
+const emits = defineEmits(['save-data']);
+
+const router = useRouter();
 
 function submitForm() {
   const formData = {
@@ -16,7 +21,15 @@ function submitForm() {
     areas: areas.value,
   };
 
-  console.log(formData);
+  emits('save-data', formData);
+
+  firstName.value = '';
+  lastName.value = '';
+  description.value = '';
+  rate.value = null;
+  areas.value = [];
+
+  router.replace('/coaches'); // We can also use router.push() method.
 }
 </script>
 

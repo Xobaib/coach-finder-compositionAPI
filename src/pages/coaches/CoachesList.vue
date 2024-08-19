@@ -13,6 +13,10 @@ const activeFilters = ref({
 
 const store = useStore();
 
+function setFilters(updatedFilters) {
+  activeFilters.value = updatedFilters;
+}
+
 const filteredCoaches = computed(() => {
   const coaches = store.getters['coaches/coaches'];
   return coaches.filter((coach) => {
@@ -33,9 +37,9 @@ const hasCoaches = computed(() => {
   return store.getters['coaches/hasCoaches'];
 });
 
-function setFilters(updatedFilters) {
-  activeFilters.value = updatedFilters;
-}
+const isCoach = computed(() => {
+  return store.getters['coaches/isCoach'];
+});
 </script>
 
 <template>
@@ -46,7 +50,9 @@ function setFilters(updatedFilters) {
     <BaseCard>
       <div class="controls">
         <BaseButton mode="outline">Referesh</BaseButton>
-        <BaseButton to="/register" link>Register as Coach</BaseButton>
+        <BaseButton v-if="!isCoach" to="/register" link
+          >Register as Coach</BaseButton
+        >
       </div>
       <ul v-if="hasCoaches">
         <CoachItem
