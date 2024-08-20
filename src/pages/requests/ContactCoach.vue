@@ -1,5 +1,12 @@
 <script setup>
 import { ref } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute, useRouter } from 'vue-router';
+
+const store = useStore();
+
+const route = useRoute();
+const router = useRouter();
 
 const email = ref('');
 const message = ref('');
@@ -16,6 +23,16 @@ function submitForm() {
     formIsVaild.value = false;
     return;
   }
+
+  const newRequest = {
+    coachId: route.params.id,
+    email: email,
+    message: message,
+  };
+
+  store.dispatch('requests/addRequest', newRequest);
+
+  router.replace('/coaches'); // we can also use router.push() method but we use replace() because we want the user does not be able to come back to this page.
 }
 </script>
 
