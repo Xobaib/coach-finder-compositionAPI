@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
 
 import CoachItem from '../../components/coaches/CoachItem.vue';
@@ -15,6 +15,10 @@ const store = useStore();
 
 function setFilters(updatedFilters) {
   activeFilters.value = updatedFilters;
+}
+
+function loadCoaches() {
+  store.dispatch('coaches/loadCoaches');
 }
 
 const filteredCoaches = computed(() => {
@@ -40,6 +44,10 @@ const hasCoaches = computed(() => {
 const isCoach = computed(() => {
   return store.getters['coaches/isCoach'];
 });
+
+onMounted(() => {
+  loadCoaches();
+});
 </script>
 
 <template>
@@ -49,7 +57,7 @@ const isCoach = computed(() => {
   <section>
     <BaseCard>
       <div class="controls">
-        <BaseButton mode="outline">Referesh</BaseButton>
+        <BaseButton mode="outline" @click="loadCoaches">Referesh</BaseButton>
         <BaseButton v-if="!isCoach" to="/register" link
           >Register as Coach</BaseButton
         >

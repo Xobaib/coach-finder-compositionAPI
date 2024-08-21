@@ -41,22 +41,22 @@ const areas = computed(() => {
   </section>
   <section>
     <BaseCard>
-      <header>
-        <h2>Interested? Reach out now!</h2>
-        <BaseButton link :to="contactLink">Contact</BaseButton>
-      </header>
-      <RouterView></RouterView>
-    </BaseCard>
-  </section>
-  <section>
-    <BaseCard>
       <BaseBadge
         v-for="area in areas"
         :key="area"
         :title="area"
         :type="area"
       ></BaseBadge>
-      <p>{{ description }}</p>
+      <p>{{ selectedCoach.description }}</p>
+    </BaseCard>
+  </section>
+  <section>
+    <BaseCard>
+      <header>
+        <h2>Interested? Reach out now!</h2>
+        <BaseButton link :to="contactLink">Contact</BaseButton>
+      </header>
+      <RouterView></RouterView>
     </BaseCard>
   </section>
 </template>
