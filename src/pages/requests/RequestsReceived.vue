@@ -28,7 +28,7 @@ const hasRequests = computed(() => {
           :message="request.message"
         />
       </ul>
-      <h3 v-else>You haven'treceived any requests yet!</h3>
+      <h3 v-else>You haven't received any requests yet!</h3>
     </BaseCard>
   </section>
 </template>
