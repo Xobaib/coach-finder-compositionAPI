@@ -11,6 +11,8 @@ const activeFilters = ref({
   career: true,
 });
 const isLoading = ref(false);
+const error = ref(null);
+const showDialog = ref(false);
 
 const store = useStore();
 
@@ -20,8 +22,17 @@ function setFilters(updatedFilters) {
 
 async function loadCoaches() {
   isLoading.value = true;
-  await store.dispatch('coaches/loadCoaches');
+  try {
+    await store.dispatch('coaches/loadCoaches');
+  } catch (err) {
+    error.value = err.message || 'Something went wrong!';
+    showDialog.value = true;
+  }
   isLoading.value = false;
+}
+
+function closeDialog() {
+  showDialog.value = false;
 }
 
 const filteredCoaches = computed(() => {
@@ -54,6 +65,24 @@ onMounted(() => {
 </script>
 
 <template>
+  <!-- My way to showing BaseDialog component that requires to an v-if statement and also defining a new ref called 'showDialog' -->
+  <BaseDialog
+    v-if="error && !isLoading && showDialog"
+    show
+    title="An error occurred!"
+    @close="closeDialog"
+  >
+    <p>{{ error }}</p>
+  </BaseDialog>
+
+  <!-- Max way to showing BaseDialog component that is shorter and cleaner than mine because we do not want v-if or showDialog ref -->
+  <!-- <BaseDialog
+    :show="!!error"
+    title="An error occurred!"
+    @close="closeDialog"
+  >
+    <p>{{ error }}</p>
+  </BaseDialog> -->
   <section>
     <CoachFilter @change-filter="setFilters"></CoachFilter>
   </section>
