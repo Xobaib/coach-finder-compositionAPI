@@ -3,7 +3,7 @@ import { defineProps } from 'vue';
 
 // const props = defineProps(['link', 'to', 'mode']);
 
-const props = defineProps({
+defineProps({
   link: {
     type: Boolean,
     required: false,
@@ -20,8 +20,6 @@ const props = defineProps({
     default: null,
   },
 });
-
-console.log(props.link);
 </script>
 
 <template>

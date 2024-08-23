@@ -10,6 +10,7 @@ const activeFilters = ref({
   backend: true,
   career: true,
 });
+const isLoading = ref(false);
 
 const store = useStore();
 
@@ -17,8 +18,10 @@ function setFilters(updatedFilters) {
   activeFilters.value = updatedFilters;
 }
 
-function loadCoaches() {
-  store.dispatch('coaches/loadCoaches');
+async function loadCoaches() {
+  isLoading.value = true;
+  await store.dispatch('coaches/loadCoaches');
+  isLoading.value = false;
 }
 
 const filteredCoaches = computed(() => {
@@ -38,7 +41,7 @@ const filteredCoaches = computed(() => {
 });
 
 const hasCoaches = computed(() => {
-  return store.getters['coaches/hasCoaches'];
+  return !isLoading.value && store.getters['coaches/hasCoaches'];
 });
 
 const isCoach = computed(() => {
@@ -58,11 +61,14 @@ onMounted(() => {
     <BaseCard>
       <div class="controls">
         <BaseButton mode="outline" @click="loadCoaches">Referesh</BaseButton>
-        <BaseButton v-if="!isCoach" to="/register" link
+        <BaseButton v-if="!isCoach && !isLoading" to="/register" link
           >Register as Coach</BaseButton
         >
       </div>
-      <ul v-if="hasCoaches">
+      <div v-if="isLoading">
+        <BaseSpinner />
+      </div>
+      <ul v-else-if="hasCoaches">
         <CoachItem
           v-for="coach in filteredCoaches"
           :key="coach.id"
