@@ -6,6 +6,9 @@ const props = defineProps(['email', 'message']);
 const emailLink = computed(() => {
   return `mailto:${props.email}`;
 });
+
+console.log(props.email);
+console.log(props.message);
 </script>
 
 <template>

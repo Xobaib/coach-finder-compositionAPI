@@ -1,26 +1,55 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import RequestItem from '../../components/requests/RequestItem.vue';
 
 const store = useStore();
 
+const isLoading = ref(false);
+const error = ref(null);
+
+async function loadRequsts() {
+  isLoading.value = true;
+  try {
+    await store.dispatch('requests/fetchRequests');
+  } catch (err) {
+    error.value = err.message || 'Something failed!';
+  }
+  isLoading.value = false;
+}
+
+function closeDialog() {
+  error.value = null;
+}
+
 const receivedRequsets = computed(() => {
+  // const requests = store.getters['requests/requests'];
+  // for (const req in requests) {
+  //   console.log(requests[req]);
+  // }
   return store.getters['requests/requests'];
 });
 
 const hasRequests = computed(() => {
   return store.getters['requests/hasRequests'];
 });
+
+onMounted(() => {
+  loadRequsts();
+});
 </script>
 
 <template>
+  <BaseDialog :show="!!error" title="An error occurred!" @close="closeDialog">
+    <p>{{ error }}</p>
+  </BaseDialog>
   <section>
     <BaseCard>
       <header>
         <h2>Requests Received</h2>
       </header>
-      <ul v-if="hasRequests">
+      <BaseSpinner v-if="isLoading" />
+      <ul v-else-if="hasRequests && !isLoading">
         <RequestItem
           v-for="request in receivedRequsets"
           :key="request.id"
