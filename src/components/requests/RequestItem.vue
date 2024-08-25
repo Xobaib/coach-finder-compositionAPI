@@ -6,15 +6,12 @@ const props = defineProps(['email', 'message']);
 const emailLink = computed(() => {
   return `mailto:${props.email}`;
 });
-
-console.log(props.email);
-console.log(props.message);
 </script>
 
 <template>
   <li>
     <div>
-      <a :href="emailLink">{{ email }}</a>
+      <a :href="emailLink" target="_blank">{{ email }}</a>
     </div>
     <p>{{ message }}</p>
   </li>

@@ -44,21 +44,17 @@ export default {
       throw error;
     }
 
-    // console.log(responseData);
-
     const requests = [];
 
     for (const key in responseData) {
       const request = {
         id: key,
         coachId: coachId,
-        userEmail: responseData[key].userEmail,
-        message: responseData[key].message,
+        userEmail: responseData[key].userEmail._value,
+        message: responseData[key].message._value,
       };
       requests.push(request);
     }
-
-    // console.log(requests);
 
     context.commit('setRequests', requests);
   },

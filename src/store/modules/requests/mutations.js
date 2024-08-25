@@ -5,6 +5,5 @@ export default {
 
   setRequests(state, payload) {
     state.requests = payload;
-    // console.log(state.requests);
   },
 };

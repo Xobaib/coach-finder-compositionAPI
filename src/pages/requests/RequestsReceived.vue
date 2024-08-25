@@ -23,10 +23,6 @@ function closeDialog() {
 }
 
 const receivedRequsets = computed(() => {
-  // const requests = store.getters['requests/requests'];
-  // for (const req in requests) {
-  //   console.log(requests[req]);
-  // }
   return store.getters['requests/requests'];
 });
 

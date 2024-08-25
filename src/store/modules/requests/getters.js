@@ -4,7 +4,6 @@ export default {
     const filteredRequests = state.requests.filter(
       (request) => request.coachId === coachId
     );
-    // console.log(filteredRequests);
     return filteredRequests;
   },
   hasRequests(_, getters) {
