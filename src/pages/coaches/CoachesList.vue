@@ -32,7 +32,8 @@ async function loadCoaches(refresh = false) {
 }
 
 function closeDialog() {
-  showDialog.value = false;
+  // showDialog.value = false;
+  error.value = false;
 }
 
 const filteredCoaches = computed(() => {
@@ -65,54 +66,52 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- My way to showing BaseDialog component that requires to an v-if statement and also defining a new ref called 'showDialog' -->
-  <BaseDialog
-    v-if="error && !isLoading && showDialog"
-    show
-    title="An error occurred!"
-    @close="closeDialog"
-  >
-    <p>{{ error }}</p>
-  </BaseDialog>
+  <div>
+    <!-- My way to showing BaseDialog component, that requires to an v-if statement and also defining a new ref called 'showDialog', the problem is if we use this way the Transition component does not work on BaseDialog component so animations does not apply to the component, the reason i think is related to "show" prop because in this way we set it always to true-->
+    <!-- <BaseDialog
+      v-if="error && !isLoading && showDialog"
+      show
+      title="An error occurred!"
+      @close="closeDialog"
+    >
+      <p>{{ error }}</p>
+    </BaseDialog> -->
 
-  <!-- Max way to showing BaseDialog component that is shorter and cleaner than mine because we do not want v-if or showDialog ref -->
-  <!-- <BaseDialog
-    :show="!!error"
-    title="An error occurred!"
-    @close="closeDialog"
-  >
-    <p>{{ error }}</p>
-  </BaseDialog> -->
-  <section>
-    <CoachFilter @change-filter="setFilters"></CoachFilter>
-  </section>
-  <section>
-    <BaseCard>
-      <div class="controls">
-        <BaseButton mode="outline" @click="loadCoaches(true)"
-          >Referesh</BaseButton
-        >
-        <BaseButton v-if="!isCoach && !isLoading" to="/register" link
-          >Register as Coach</BaseButton
-        >
-      </div>
-      <div v-if="isLoading">
-        <BaseSpinner />
-      </div>
-      <ul v-else-if="hasCoaches">
-        <CoachItem
-          v-for="coach in filteredCoaches"
-          :key="coach.id"
-          :id="coach.id"
-          :first-name="coach.firstName"
-          :last-name="coach.lastName"
-          :rate="coach.hourlyRate"
-          :areas="coach.areas"
-        />
-      </ul>
-      <h3 v-else>No coaches Found!</h3>
-    </BaseCard>
-  </section>
+    <!-- Max way to showing BaseDialog component that is shorter and cleaner than mine because we do not want v-if or showDialog ref -->
+    <BaseDialog :show="!!error" title="An error occurred!" @close="closeDialog">
+      <p>{{ error }}</p>
+    </BaseDialog>
+    <section>
+      <CoachFilter @change-filter="setFilters"></CoachFilter>
+    </section>
+    <section>
+      <BaseCard>
+        <div class="controls">
+          <BaseButton mode="outline" @click="loadCoaches(true)"
+            >Referesh</BaseButton
+          >
+          <BaseButton v-if="!isCoach && !isLoading" to="/register" link
+            >Register as Coach</BaseButton
+          >
+        </div>
+        <div v-if="isLoading">
+          <BaseSpinner />
+        </div>
+        <ul v-else-if="hasCoaches">
+          <CoachItem
+            v-for="coach in filteredCoaches"
+            :key="coach.id"
+            :id="coach.id"
+            :first-name="coach.firstName"
+            :last-name="coach.lastName"
+            :rate="coach.hourlyRate"
+            :areas="coach.areas"
+          />
+        </ul>
+        <h3 v-else>No coaches Found!</h3>
+      </BaseCard>
+    </section>
+  </div>
 </template>
 
 <style scoped>
