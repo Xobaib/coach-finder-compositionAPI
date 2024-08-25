@@ -35,7 +35,7 @@ export default {
     }
 
     const response = await fetch(
-      `https://vue-htpp-demo-cmpapi-default-rtdb.firebaseio.com/coaches.jso`
+      `https://vue-htpp-demo-cmpapi-default-rtdb.firebaseio.com/coaches.json`
     );
 
     const responseData = await response.json();
