@@ -20,10 +20,10 @@ function setFilters(updatedFilters) {
   activeFilters.value = updatedFilters;
 }
 
-async function loadCoaches() {
+async function loadCoaches(refresh = false) {
   isLoading.value = true;
   try {
-    await store.dispatch('coaches/loadCoaches');
+    await store.dispatch('coaches/loadCoaches', { forceRefresh: refresh });
   } catch (err) {
     error.value = err.message || 'Something went wrong!';
     showDialog.value = true;
@@ -89,7 +89,9 @@ onMounted(() => {
   <section>
     <BaseCard>
       <div class="controls">
-        <BaseButton mode="outline" @click="loadCoaches">Referesh</BaseButton>
+        <BaseButton mode="outline" @click="loadCoaches(true)"
+          >Referesh</BaseButton
+        >
         <BaseButton v-if="!isCoach && !isLoading" to="/register" link
           >Register as Coach</BaseButton
         >
